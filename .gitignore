@@ -1,0 +1,40 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Webpack directories
+.webpack
+
+# 環境変数のyml
+prd.yml
+stg.yml
+dev.yml
+
+# tsc
+lib
+
+yarn.lock
+
+# dynamodb local
+.dynamodb
+export-json.sh
+
+# appsync local
+schema.graphql
+!src/**/*.graphql
+
+# test
+coverage
+
+# 無駄なschema
+config/resources/**/*.graphql-e
+
+#
+.DS_Store
+scripts
+json
+localPayment.sh
+localPayment.dev.sh
