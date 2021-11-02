@@ -1,0 +1,35 @@
+{
+  "name": "chillnn-sfa-server",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:yoshimatsu567/chillnn-sfa-server.git",
+  "author": "yoshimatsu567",
+  "license": "",
+  "dependencies": {
+    "aws-lambda": "^1.0.6",
+    "aws-sdk": "^2.978.0",
+    "chillnn-sfa-abr": "git+ssh://git@github.com:yoshimatsu567/chillnn-sfa-abr.git#dev"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "^3.1.0",
+    "@graphql-codegen/cli": "^2.1.1",
+    "@graphql-codegen/schema-ast": "^2.1.0",
+    "@graphql-codegen/typescript": "^2.1.2",
+    "@types/aws-lambda": "^8.10.83",
+    "serverless-appsync-plugin": "^1.12.0",
+    "serverless-plugin-git-variables": "^5.1.0",
+    "serverless-plugin-split-stacks": "^1.11.2",
+    "serverless-prune-plugin": "^1.5.1",
+    "serverless-pseudo-parameters": "^2.6.0",
+    "serverless-webpack": "^5.5.2",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.2",
+    "webpack": "^5.51.1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "scripts": {
+    "abr": "sh node_modules/chillnn-sfa-abr/pull.sh",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "deploy": "sh cleanSchema.sh"
+  }
+}

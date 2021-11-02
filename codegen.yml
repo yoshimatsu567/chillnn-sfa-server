@@ -1,0 +1,22 @@
+overwrite: true
+schema:
+    - './node_modules/chillnn-sfa-abr/dist/schema.graphql'
+documents: null
+config:
+    namingConvention: keep
+    scalars:
+        AWSDate: string
+        AWSTime: string
+        AWSTimestamp: number
+        AWSDateTime: string
+        AWSEmail: string
+        AWSJSON: string
+        AWSURL: string
+        AWSPhone: string
+        AWSIPAddress: string
+generates:
+    resources/appsync/user/schema.graphql:
+        schema:
+            - './src/appsync/user/schema.graphql'
+        plugins:
+            - 'schema-ast'

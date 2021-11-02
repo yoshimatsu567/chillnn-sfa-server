@@ -1,0 +1,62 @@
+#######################################################
+#
+# AppSyncのイベントを受け取るLambdaのRole
+#
+#######################################################
+Resources:
+    # Lambdaの実行権限
+    ControllerLambdaRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_ROLE_NAME}
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Policies:
+                - ## S3の設定
+                  PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_S3}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: 'Allow'
+                            Action:
+                                # VPC関係
+                                - s3:PutObject
+                                - s3:GetObject
+                                - s3:DeleteObject
+                            Resource:
+                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                - ## DynamoDBの設定
+                  PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_DYNAMODB}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: 'Allow'
+                            Action:
+                                - 'dynamodb:Query'
+                                - 'dynamodb:BatchWriteItem'
+                                - 'dynamodb:GetItem'
+                                - 'dynamodb:DeleteItem'
+                                - 'dynamodb:PutItem'
+                                - 'dynamodb:Scan'
+                                - 'dynamodb:UpdateItem'
+                            Resource:
+                                - { Fn::GetAtt: ChillnnSFAMasterTable.Arn }
+                                - Fn::Join: ['', [{ Fn::GetAtt: ChillnnSFAMasterTable.Arn }, '/*']]
+                - ## ログの設定
+                  PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_LOG}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Action:
+                                - logs:PutLogEvents
+                                - logs:CreateLogStream
+                            Resource:
+                                - '*'
+                            Effect: Allow

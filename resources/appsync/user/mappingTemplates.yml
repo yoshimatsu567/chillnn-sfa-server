@@ -1,0 +1,114 @@
+##################################################
+#
+#
+# mapping
+#
+#
+##################################################
+##################################################
+# user
+##################################################
+- dataSource: controller
+  type: Mutation
+  field: updateUserMast
+  request: userMast/updateUserMast/req.vtl
+  response: userMast/updateUserMast/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchMyUserMast
+  request: userMast/fetchMyUserMast/req.vtl
+  response: userMast/fetchMyUserMast/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchUserMastByUserID
+  request: userMast/fetchUserMastByUserID/req.vtl
+  response: userMast/fetchUserMastByUserID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchAllUser
+  request: userMast/fetchAllUser/req.vtl
+  response: userMast/fetchAllUser/res.vtl
+##################################################
+# client
+##################################################
+- dataSource: controller
+  type: Mutation
+  field: addClient
+  request: clientMast/addClient/req.vtl
+  response: clientMast/addClient/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: updateClient
+  request: clientMast/updateClient/req.vtl
+  response: clientMast/updateClient/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientByClientID
+  request: clientMast/fetchClientByClientID/req.vtl
+  response: clientMast/fetchClientByClientID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchAllClient
+  request: clientMast/fetchAllClient/req.vtl
+  response: clientMast/fetchAllClient/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientByChargeUserID
+  request: clientMast/fetchClientByChargeUserID/req.vtl
+  response: clientMast/fetchClientByChargeUserID/res.vtl
+##################################################
+# phase
+##################################################
+- dataSource: controller
+  type: Mutation
+  field: addPhase
+  request: phaseMast/addPhase/req.vtl
+  response: phaseMast/addPhase/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: updatePhase
+  request: phaseMast/updatePhase/req.vtl
+  response: phaseMast/updatePhase/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchPhasesByClientID
+  request: clientMast/fetchPhasesByClientID/req.vtl
+  response: clientMast/fetchPhasesByClientID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchAllPhase
+  request: clientMast/fetchAllPhase/req.vtl
+  response: clientMast/fetchAllPhase/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchPhasesByEditedUserID
+  request: clientMast/fetchPhasesByEditedUserID/req.vtl
+  response: clientMast/fetchPhasesByEditedUserID/res.vtl
+##################################################
+# event
+##################################################
+- dataSource: controller
+  type: Mutation
+  field: addEvent
+  request: phaseMast/addEvent/req.vtl
+  response: phaseMast/addEvent/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: updateEvent
+  request: phaseMast/updateEvent/req.vtl
+  response: phaseMast/updateEvent/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchEventsByClientID
+  request: clientMast/fetchEventsByClientID/req.vtl
+  response: clientMast/fetchEventsByClientID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchAllEvent
+  request: clientMast/fetchAllEvent/req.vtl
+  response: clientMast/fetchAllEvent/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchEventsByEditedUserID
+  request: clientMast/fetchEventsByEditedUserID/req.vtl
+  response: clientMast/fetchEventsByEditedUserID/res.vtl

@@ -1,0 +1,9 @@
+# appsync
+userController:
+    handler: src/functions/controller/appsync/userController.handler
+    name: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_NAME}
+    environment: ${self:custom.env.app.${self:provider.stage}}
+    description: ユーザーのコントローラー
+    memorySize: 1024
+    timeout: 5
+    role: { Fn::GetAtt: [ControllerLambdaRole, Arn] }

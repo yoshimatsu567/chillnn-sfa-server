@@ -1,0 +1,5 @@
+#if($context.result.items == [])
+    $util.toJson(null)
+#else
+    $util.toJson($context.result.items[0])
+#end

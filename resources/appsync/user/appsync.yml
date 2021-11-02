@@ -1,0 +1,18 @@
+name: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_NAME}
+authenticationType: AMAZON_COGNITO_USER_POOLS
+# if AMAZON_COGNITO_USER_POOLS
+userPoolConfig:
+    awsRegion: ${self:provider.region} # defaults to provider region
+    defaultAction: ALLOW # required # ALLOW or DENY
+    userPoolId: { Ref: ChillnnSFAUserPool } # required # user pool ID
+additionalAuthenticationProviders:
+    - authenticationType: API_KEY
+logConfig:
+    loggingRoleArn: { Fn::GetAtt: [UserAppSyncLogRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
+    level: ERROR # Logging Level: NONE | ERROR | ALL
+mappingTemplatesLocation: src/appsync/user/mapping-templates
+mappingTemplates:
+    - ${file(./resources/appsync/user/mappingTemplates.yml)}
+schema: resources/appsync/user/schema.graphql
+dataSources:
+    - ${file(./resources/appsync/user/dataSources.yml)}

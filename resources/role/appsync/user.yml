@@ -1,0 +1,81 @@
+Resources:
+    #############################################################
+    # HOST
+    #############################################################
+    # Dynamo
+    UserAppSyncDynamoRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_DYNAMO_ROLE_NAME}
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'appsync.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Policies:
+                - PolicyName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_DYNAMO_POLICY_NAME}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: 'Allow'
+                            Action:
+                                - 'dynamodb:Query'
+                                - 'dynamodb:GetItem'
+                            Resource:
+                                - { Fn::GetAtt: ChillnnSFAMasterTable.Arn }
+                                - Fn::Join: ['', [{ Fn::GetAtt: ChillnnSFAMasterTable.Arn }, '/*']]
+    ## Lambdaの実行権限
+    UserAppSyncLambdaRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_LAMBDA_ROLE_NAME}
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'appsync.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Policies:
+                - PolicyName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_LAMBDA_POLICY_NAME}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: 'Allow'
+                            Action:
+                                - 'lambda:invokeFunction'
+                            Resource:
+                                - '*'
+    ## ログ
+    UserAppSyncLogRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_LOG_ROLE_NAME}
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'appsync.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Policies:
+                - ## ログの設定
+                  PolicyName: ${self:custom.env.infra.${self:provider.stage}.APPSYNC_USER_LOG_POLICY_NAME}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Action:
+                                - logs:CreateLogStream
+                                - logs:PutLogEvents
+                                - logs:PutLogGroup
+                            Resource:
+                                - '*'
+                            Effect: Allow

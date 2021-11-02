@@ -1,0 +1,15 @@
+{
+    "version": "2018-05-29",
+    "operation": "Query",
+    "index": "uuidIndex",
+    "query": {
+        "expression": "#uuid = :uuid",
+        "expressionNames": {
+            "#uuid": "uuid",
+        },
+        "expressionValues": {
+            ":uuid": $util.dynamodb.toDynamoDBJson("${ctx.args.userID}"),
+        }
+    },
+  
+}

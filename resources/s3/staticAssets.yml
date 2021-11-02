@@ -1,0 +1,38 @@
+Resources:
+    StaticAssetsS3Bucket:
+        Type: AWS::S3::Bucket
+        ## 残す
+        # DeletionPolicy: Retain # <= 本番ではこれ設定しないと死にます
+        Properties:
+            BucketName: ${self:custom.env.infra.${self:provider.stage}.S3_STATIC_ASSETS_BUCKET_NAME}
+            AccessControl: Private
+            CorsConfiguration:
+                CorsRules:
+                    - AllowedOrigins:
+                          - '*'
+                      AllowedHeaders:
+                          - '*'
+                      AllowedMethods:
+                          - GET
+                          - PUT
+                          - POST
+                          - DELETE
+                          - HEAD
+                      MaxAge: 3000
+                      ExposedHeaders:
+                          - ETag
+    ## Bucket
+    StaticAssetsS3BucketPolicy:
+        Type: AWS::S3::BucketPolicy
+        Properties:
+            Bucket:
+                Ref: StaticAssetsS3Bucket
+            PolicyDocument:
+                Statement:
+                    - Sid: PublicReadGetObject
+                      Effect: Allow
+                      Principal: '*'
+                      Action:
+                          - 's3:GetObject'
+                      Resource:
+                          - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']]

@@ -1,0 +1,72 @@
+###############################################################
+#                                                             #
+#                        User Identity                        #
+#                                                             #
+###############################################################
+Resources:
+    # User pool
+    ChillnnsfaUserPool:
+        Type: 'AWS::Cognito::UserPool'
+        # DeletionPolicy: Retain # <= 本番ではこれ設定しないと死にます
+        Properties:
+            UserPoolName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_USER_POOL_NAME}
+            AdminCreateUserConfig:
+                AllowAdminCreateUserOnly: false
+                UnusedAccountValidityDays: 30
+            UsernameAttributes:
+                - email
+            AutoVerifiedAttributes:
+                - email
+            EmailVerificationMessage: verify_code={####}.
+            EmailVerificationSubject: 'Welcome to CHILLNN sfa'
+            LambdaConfig:
+                CustomMessage: 'arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_COGNITO_NAME}'
+            MfaConfiguration: 'OFF'
+            Policies:
+                PasswordPolicy:
+                    MinimumLength: 8
+                    RequireLowercase: false
+                    RequireNumbers: false
+                    RequireSymbols: false
+                    RequireUppercase: false
+            Schema:
+                - AttributeDataType: 'String'
+                  DeveloperOnlyAttribute: false
+                  Mutable: true
+                  Name: 'email'
+                  StringAttributeConstraints:
+                      MaxLength: '2048'
+                      MinLength: '0'
+                  Required: true
+            SmsAuthenticationMessage: 'Your authentication code is {####}.'
+            SmsVerificationMessage: 'Your verification code is {####}.'
+            UserPoolTags:
+                Name: ${self:provider.stage}
+    # App Client
+    ChillnnSFAUserPoolClient:
+        Type: 'AWS::Cognito::UserPoolClient'
+        Properties:
+            ClientName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_USER_POOL_CLIENT_NAME}
+            GenerateSecret: false
+            ExplicitAuthFlows:
+                - 'ADMIN_NO_SRP_AUTH'
+            ReadAttributes:
+                - 'email'
+            RefreshTokenValidity: 30
+            UserPoolId: { Ref: ChillnnSFAUserPool }
+            WriteAttributes:
+                - 'email'
+    # The federated identity for our user pool to auth with
+    ChillnnsfaUserIdentityPool:
+        Type: AWS::Cognito::IdentityPool
+        Properties:
+            # Generate a name based on the stage
+            IdentityPoolName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_IDENTITY_POOL_NAME}
+            # Don't allow unauthenticated users
+            AllowUnauthenticatedIdentities: true
+            # Link to our User Pool
+            CognitoIdentityProviders:
+                - ClientId:
+                      Ref: ChillnnSFAUserPoolClient
+                  ProviderName:
+                      Fn::GetAtt: ['ChillnnSFAUserPool', 'ProviderName']

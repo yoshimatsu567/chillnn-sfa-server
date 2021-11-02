@@ -1,0 +1,124 @@
+Resources:
+    # 変更が考えにくい静的アセットのキャッシュポリシー
+    StaticAssetsStaticCachePolicy:
+        Type: AWS::CloudFront::CachePolicy
+        Properties:
+            CachePolicyConfig:
+                Comment: 'ActiveCache'
+                DefaultTTL: 604800
+                MinTTL: 604800 # 1週間
+                MaxTTL: 31536000 # 1年
+                Name: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_STATIC_CACHE_POLICY_NAME}
+                ParametersInCacheKeyAndForwardedToOrigin:
+                    CookiesConfig:
+                        CookieBehavior: none
+                    EnableAcceptEncodingGzip: false
+                    HeadersConfig:
+                        HeaderBehavior: whitelist
+                        Headers:
+                            - Accept-Encoding
+                            - accept-encoding
+                            - Origin
+                    QueryStringsConfig:
+                        QueryStringBehavior: all
+    # 同名での変更が頻繁に起こる静的アセットのキャッシュポリシー
+    StaticAssetsActiveCachePolicy:
+        Type: AWS::CloudFront::CachePolicy
+        Properties:
+            CachePolicyConfig:
+                Comment: 'ActiveCache'
+                DefaultTTL: 3600 # 1時間
+                MinTTL: 3600 # 1時間
+                MaxTTL: 3600 # 1時間
+                Name: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_ACTIVE_CACHE_POLICY_NAME}
+                ParametersInCacheKeyAndForwardedToOrigin:
+                    CookiesConfig:
+                        CookieBehavior: none
+                    EnableAcceptEncodingGzip: false
+                    HeadersConfig:
+                        HeaderBehavior: whitelist
+                        Headers:
+                            - Accept-Encoding
+                            - accept-encoding
+                            - Origin
+                    QueryStringsConfig:
+                        QueryStringBehavior: all
+    ## Cloud Front
+    StaticAssetsCloudFrontDistribution:
+        Type: AWS::CloudFront::Distribution
+        Properties:
+            DistributionConfig:
+                Aliases:
+                    - ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_ALIAS_NAME}
+                ViewerCertificate:
+                    AcmCertificateArn: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_ALIAS_ACM_ARN} # *.dev.academy.chの証明書
+                    SslSupportMethod: sni-only
+                CacheBehaviors:
+                    # xml
+                    - PathPattern: '*.xml'
+                      AllowedMethods:
+                          - HEAD
+                          - GET
+                          - OPTIONS
+                      CachedMethods:
+                          - HEAD
+                          - GET
+                          - OPTIONS
+                      TargetOriginId: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_S3_STATIC_ASSETS_ORIGIN_ID}
+                      ViewerProtocolPolicy: 'https-only'
+                      CachePolicyId: { 'Fn::GetAtt': [StaticAssetsActiveCachePolicy, Id] }
+                      Compress: true
+                    # その他
+                    - AllowedMethods:
+                          - HEAD
+                          - GET
+                          - OPTIONS
+                      CachedMethods:
+                          - HEAD
+                          - GET
+                          - OPTIONS
+                      Compress: true
+                      CachePolicyId: { 'Fn::GetAtt': [StaticAssetsStaticCachePolicy, Id] }
+                      PathPattern: public/**
+                      # SmoothStreaming: Boolean
+                      TargetOriginId: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_S3_STATIC_ASSETS_ORIGIN_ID}
+                      # TrustedSigners:
+                      #   - 文字列
+                      ViewerProtocolPolicy: https-only
+                # Comment: 画像配信用
+                # CustomErrorResponses:
+                DefaultCacheBehavior:
+                    AllowedMethods:
+                        - HEAD
+                        - GET
+                        - OPTIONS
+                    CachedMethods:
+                        - HEAD
+                        - GET
+                        - OPTIONS
+                    Compress: true
+                    CachePolicyId: { 'Fn::GetAtt': [StaticAssetsStaticCachePolicy, Id] }
+                    TargetOriginId: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_S3_STATIC_ASSETS_ORIGIN_ID}
+                    # TrustedSigners:
+                    #   - 文字列
+                    ViewerProtocolPolicy: https-only
+                Enabled: true
+                # HttpVersion:
+                # IPV6Enabled:
+                # Logging:
+                Origins:
+                    - DomainName: { Fn::GetAtt: [StaticAssetsS3Bucket, DomainName] }
+                      Id: ${self:custom.env.infra.${self:provider.stage}.CLOUD_FRONT_S3_STATIC_ASSETS_ORIGIN_ID}
+                      S3OriginConfig:
+                          OriginAccessIdentity: { Fn::Join: ['/', [origin-access-identity/cloudfront, { Ref: StaticAssetsCloudFrontOriginAccessIdentity }]] }
+                PriceClass: PriceClass_200
+
+            Tags:
+                - Key: 'Name'
+                  Value: ${self:provider.stage} Input Asset
+
+    StaticAssetsCloudFrontOriginAccessIdentity:
+        Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+        Properties:
+            CloudFrontOriginAccessIdentityConfig:
+                Comment: { Ref: AWS::StackName }

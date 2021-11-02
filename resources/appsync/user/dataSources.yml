@@ -1,0 +1,16 @@
+# SFAのマスターテーブル
+- type: AMAZON_DYNAMODB
+  name: masterTable
+  description: 'マスターデータのテーブル'
+  config:
+      tableName: { Ref: ChillnnSFAMasterTable }
+      serviceRoleArn: { Fn::GetAtt: [UserAppSyncDynamoRole, Arn] }
+      region: ${self:custom.env.infra.${self:provider.stage}.REGION}
+# SFAのマスターテーブル
+- type: AWS_LAMBDA
+  name: controller
+  description: 'コントローラー'
+  config:
+      functionName: userController
+      serviceRoleArn: { Fn::GetAtt: [UserAppSyncLambdaRole, Arn] }
+      region: ${self:custom.env.infra.${self:provider.stage}.REGION}

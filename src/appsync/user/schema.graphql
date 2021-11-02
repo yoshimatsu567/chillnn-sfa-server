@@ -1,0 +1,53 @@
+schema {
+    mutation: Mutation
+    query: Query
+}
+
+type Mutation {
+    ##################################################
+    # user
+    ##################################################
+    updateUserMast(input: UserMastInput!): UserMast!
+    ##################################################
+    # client
+    ##################################################
+    addClient(input: ClientMastInput!): ClientMast!
+    updateClient(input: ClientMastInput!): ClientMast!
+    ##################################################
+    # phase
+    ##################################################
+    addPhase(input: PhaseMastInput!): PhaseMast!
+    updatePhase(input: PhaseMastInput!): PhaseMast!
+    ##################################################
+    # event
+    ##################################################
+    addEvent(input: EventMastInput!): EventMast!
+    updateEvent(input: EventMastInput!): EventMast!
+}
+
+type Query {
+    ##################################################
+    # user
+    ##################################################
+    fetchMyUserMast: UserMast
+    fetchUserMastByUserID(userID: ID!): UserMast
+    fetchAllUser: [UserMast!]!
+    ##################################################
+    # client
+    ##################################################
+    fetchClientByClientID(clientID: ID!): ClientMast
+    fetchClientByChargeUserID(chargeUserID: ID!): [ClientMast!]!
+    fetchAllClient: [ClientMast!]!
+    ##################################################
+    # phase
+    ##################################################
+    fetchPhasesByClientID(clientID: ID!): [PhaseMast!]!
+    fetchPhasesByEditedUserID(editedUserID: ID!): [PhaseMast!]!
+    fetchAllPhase: [PhaseMast!]!
+    ##################################################
+    # event
+    ##################################################
+    fetchEventsByClientID(clientID: ID!): [EventMast!]!
+    fetchEventsByEditedUserID(editedUserID: ID!): [EventMast!]!
+    fetchAllEvent: [EventMast!]!
+}

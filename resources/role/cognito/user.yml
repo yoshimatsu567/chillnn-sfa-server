@@ -1,0 +1,93 @@
+#######################################################
+#
+# Cognitoのユーザーロール
+#
+#######################################################
+Resources:
+    # IAM role used for authenticated users
+    UserCognitoAuthRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_AUTHORIZED_ROLE_NAME}
+            Path: /
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Federated: 'cognito-identity.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRoleWithWebIdentity'
+                      Condition:
+                          StringEquals:
+                              cognito-identity.amazonaws.com:aud:
+                                  Ref: ChillnnSFAUserIdentityPool
+                          ForAnyValue:StringLike:
+                              'cognito-identity.amazonaws.com:amr': authenticated
+            Policies:
+                - PolicyName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_AUTHORIZED_POLICY_NAME}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: Allow
+                            Action:
+                                - cognito-identity:*
+                                - mobileanalytics:PutEvents
+                                - cognito-sync:*
+                            Resource: '*'
+                          - Action:
+                                - s3:GetObject
+                                - s3:PutObject
+                                - s3:DeleteObject
+                            Resource:
+                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                            Effect: Allow
+
+    # IAM role used for unauthenticated users
+    UserCognitoUnauthRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_UnAUTHORIZED_ROLE_NAME}
+            Path: /
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Federated: 'cognito-identity.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRoleWithWebIdentity'
+                      Condition:
+                          StringEquals:
+                              cognito-identity.amazonaws.com:aud:
+                                  Ref: ChillnnSFAUserIdentityPool
+                          ForAnyValue:StringLike:
+                              'cognito-identity.amazonaws.com:amr': unauthenticated
+            Policies:
+                - PolicyName: ${self:custom.env.infra.${self:provider.stage}.COGNITO_USER_UnAUTHORIZED_POLICY_NAME}
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Effect: Allow
+                            Action:
+                                - mobileanalytics:PutEvents
+                                - cognito-sync:*
+                            Resource:
+                                - '*'
+                          # S3
+                          - Action:
+                                - s3:GetObject
+                            Resource:
+                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                            Effect: Allow
+    # IAM roles
+    UserIdentityPoolRoles:
+        Type: AWS::Cognito::IdentityPoolRoleAttachment
+        Properties:
+            IdentityPoolId:
+                Ref: ChillnnSFAUserIdentityPool
+            Roles:
+                authenticated:
+                    Fn::GetAtt: [UserCognitoAuthRole, Arn]
+                unauthenticated:
+                    Fn::GetAtt: [UserCognitoUnauthRole, Arn]
