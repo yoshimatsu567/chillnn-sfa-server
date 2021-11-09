@@ -35,13 +35,13 @@ Resources:
                                 - mobileanalytics:PutEvents
                                 - cognito-sync:*
                             Resource: '*'
-                          - Action:
-                                - s3:GetObject
-                                - s3:PutObject
-                                - s3:DeleteObject
-                            Resource:
-                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
-                            Effect: Allow
+                          #   - Action:
+                          #         - s3:GetObject
+                          #         - s3:PutObject
+                          #         - s3:DeleteObject
+                          # Resource:
+                          #     - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                          # Effect: Allow
 
     # IAM role used for unauthenticated users
     UserCognitoUnauthRole:
@@ -75,11 +75,11 @@ Resources:
                             Resource:
                                 - '*'
                           # S3
-                          - Action:
-                                - s3:GetObject
-                            Resource:
-                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
-                            Effect: Allow
+                          #   - Action:
+                          #         - s3:GetObject
+                          #     Resource:
+                          #         - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                          #     Effect: Allow
     # IAM roles
     UserIdentityPoolRoles:
         Type: AWS::Cognito::IdentityPoolRoleAttachment

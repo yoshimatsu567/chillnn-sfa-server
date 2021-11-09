@@ -35,7 +35,7 @@ export class DynamoDBUserMastRepository extends DynamoDBRepositoryBase<UserMast>
             },
         });
     }
-    public fetchMyUserMast(): Promise<UserMast> {
+    public fetchMyUserMast(): Promise<UserMast | null> {
         // server sideでは実行不可能
         throw new Error('Method not implemented.');
     }

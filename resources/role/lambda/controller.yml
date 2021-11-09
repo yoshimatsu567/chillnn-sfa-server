@@ -19,19 +19,19 @@ Resources:
                       Action:
                           - 'sts:AssumeRole'
             Policies:
-                - ## S3の設定
-                  PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_S3}
-                  PolicyDocument:
-                      Version: '2012-10-17'
-                      Statement:
-                          - Effect: 'Allow'
-                            Action:
-                                # VPC関係
-                                - s3:PutObject
-                                - s3:GetObject
-                                - s3:DeleteObject
-                            Resource:
-                                - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
+                # - ## S3の設定
+                #   PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_S3}
+                #   PolicyDocument:
+                #       Version: '2012-10-17'
+                #       Statement:
+                #           - Effect: 'Allow'
+                #             Action:
+                #                 # VPC関係
+                #                 - s3:PutObject
+                #                 - s3:GetObject
+                #                 - s3:DeleteObject
+                #             Resource:
+                #                 - Fn::Join: ['', ['arn:aws:s3:::', { Ref: StaticAssetsS3Bucket }, '/*']] # ゆるゆるセキュリティ
                 - ## DynamoDBの設定
                   PolicyName: ${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_CONTROLLER_POLICY_NAME_DYNAMODB}
                   PolicyDocument:

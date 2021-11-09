@@ -5,7 +5,7 @@
 ###############################################################
 Resources:
     # User pool
-    ChillnnsfaUserPool:
+    ChillnnSFAUserPool:
         Type: 'AWS::Cognito::UserPool'
         # DeletionPolicy: Retain # <= 本番ではこれ設定しないと死にます
         Properties:
@@ -18,7 +18,7 @@ Resources:
             AutoVerifiedAttributes:
                 - email
             EmailVerificationMessage: verify_code={####}.
-            EmailVerificationSubject: 'Welcome to CHILLNN sfa'
+            EmailVerificationSubject: 'Welcome to CHILLNN SFA'
             LambdaConfig:
                 CustomMessage: 'arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:custom.env.infra.${self:provider.stage}.LAMBDA_USER_COGNITO_NAME}'
             MfaConfiguration: 'OFF'
@@ -57,7 +57,7 @@ Resources:
             WriteAttributes:
                 - 'email'
     # The federated identity for our user pool to auth with
-    ChillnnsfaUserIdentityPool:
+    ChillnnSFAUserIdentityPool:
         Type: AWS::Cognito::IdentityPool
         Properties:
             # Generate a name based on the stage

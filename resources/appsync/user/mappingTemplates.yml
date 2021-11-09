@@ -15,6 +15,11 @@
   response: userMast/updateUserMast/res.vtl
 - dataSource: masterTable
   type: Query
+  field: fetchAllUser
+  request: userMast/fetchAllUser/req.vtl
+  response: userMast/fetchAllUser/res.vtl
+- dataSource: masterTable
+  type: Query
   field: fetchMyUserMast
   request: userMast/fetchMyUserMast/req.vtl
   response: userMast/fetchMyUserMast/res.vtl
@@ -23,11 +28,6 @@
   field: fetchUserMastByUserID
   request: userMast/fetchUserMastByUserID/req.vtl
   response: userMast/fetchUserMastByUserID/res.vtl
-- dataSource: masterTable
-  type: Query
-  field: fetchAllUser
-  request: userMast/fetchAllUser/req.vtl
-  response: userMast/fetchAllUser/res.vtl
 ##################################################
 # client
 ##################################################
@@ -72,43 +72,43 @@
 - dataSource: masterTable
   type: Query
   field: fetchPhasesByClientID
-  request: clientMast/fetchPhasesByClientID/req.vtl
-  response: clientMast/fetchPhasesByClientID/res.vtl
+  request: phaseMast/fetchPhasesByClientID/req.vtl
+  response: phaseMast/fetchPhasesByClientID/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchAllPhase
-  request: clientMast/fetchAllPhase/req.vtl
-  response: clientMast/fetchAllPhase/res.vtl
+  request: phaseMast/fetchAllPhase/req.vtl
+  response: phaseMast/fetchAllPhase/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchPhasesByEditedUserID
-  request: clientMast/fetchPhasesByEditedUserID/req.vtl
-  response: clientMast/fetchPhasesByEditedUserID/res.vtl
+  request: phaseMast/fetchPhasesByEditedUserID/req.vtl
+  response: phaseMast/fetchPhasesByEditedUserID/res.vtl
 ##################################################
 # event
 ##################################################
 - dataSource: controller
   type: Mutation
   field: addEvent
-  request: phaseMast/addEvent/req.vtl
-  response: phaseMast/addEvent/res.vtl
+  request: eventMast/addEvent/req.vtl
+  response: eventMast/addEvent/res.vtl
 - dataSource: controller
   type: Mutation
   field: updateEvent
-  request: phaseMast/updateEvent/req.vtl
-  response: phaseMast/updateEvent/res.vtl
+  request: eventMast/updateEvent/req.vtl
+  response: eventMast/updateEvent/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchEventsByClientID
-  request: clientMast/fetchEventsByClientID/req.vtl
-  response: clientMast/fetchEventsByClientID/res.vtl
+  request: eventMast/fetchEventsByClientID/req.vtl
+  response: eventMast/fetchEventsByClientID/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchAllEvent
-  request: clientMast/fetchAllEvent/req.vtl
-  response: clientMast/fetchAllEvent/res.vtl
+  request: eventMast/fetchAllEvent/req.vtl
+  response: eventMast/fetchAllEvent/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchEventsByEditedUserID
-  request: clientMast/fetchEventsByEditedUserID/req.vtl
-  response: clientMast/fetchEventsByEditedUserID/res.vtl
+  request: eventMast/fetchEventsByEditedUserID/req.vtl
+  response: eventMast/fetchEventsByEditedUserID/res.vtl

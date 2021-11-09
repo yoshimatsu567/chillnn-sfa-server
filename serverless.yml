@@ -1,0 +1,81 @@
+service:
+    name: chillnn-sfa-server
+
+provider:
+    name: aws
+    stage: ${opt:stage, git:branch}
+    region: ap-northeast-1
+    runtime: nodejs14.x
+    lambdaHashingVersion: 20201221
+    iam:
+        role:
+            name: ${self:custom.env.infra.${self:provider.stage}.AWS_SERVICE_ROLE_NAME}
+            statements:
+                - Effect: Allow
+                  Action:
+                      - logs:CreateLogGroup
+                      - logs:CreateLogStream
+                      - logs:PutLogEvents
+                  Resource:
+                      - '*'
+    profile: ${self:custom.env.infra.${self:provider.stage}.AWS_CLI_PROFILE}
+    logRetentionInDays: 3 # ログは3日まで残す
+
+plugins:
+    - serverless-plugin-git-variables
+    - serverless-appsync-plugin
+    - serverless-plugin-split-stacks
+    - serverless-pseudo-parameters
+    - serverless-webpack
+    - serverless-prune-plugin
+
+package:
+    individually: true
+
+functions:
+    - ${file(./resources/lambda/cognito/user.yml)}
+    - ${file(./resources/lambda/controller/user.yml)}
+
+custom:
+    env:
+        app:
+            dev: ${file(./env/app/dev.yml)}
+            stg: ${file(./env/app/stg.yml)}
+            prd: ${file(./env/app/prd.yml)}
+        infra:
+            dev: ${file(./env/infra/dev.yml)}
+            stg: ${file(./env/infra/stg.yml)}
+            prd: ${file(./env/infra/prd.yml)}
+    prune:
+        automatic: true
+        number: 3
+    webpack:
+        webpackConfig: 'webpack.config.js' # Name of webpack configuration file
+        includeModules: # Node modules configuration for packaging
+            packagePath: './package.json'
+        excludeFiles: src/**/*.(test|spec).ts
+        packager: 'yarn' # Packager that will be used to package your external modules
+    appSync:
+        - ${file(./resources/appsync/user/appsync.yml)}
+
+resources:
+    # cloudfront
+    # - ${file(./resources/cloudfront/staticAssets.yml)}
+
+    # cognito
+    - ${file(./resources/cognito/user.yml)}
+
+    # dynamodb
+    - ${file(./resources/dynamodb/master.yml)}
+
+    # role
+    ## appsync
+    - ${file(./resources/role/appsync/user.yml)}
+    ## cognito
+    - ${file(./resources/role/cognito/user.yml)}
+    ## lambda
+    - ${file(./resources/role/lambda/cognito.yml)}
+    - ${file(./resources/role/lambda/controller.yml)}
+
+    # s3
+    # - ${file(./resources/s3/staticAssets.yml)}
