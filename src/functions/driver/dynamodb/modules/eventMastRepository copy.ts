@@ -81,7 +81,7 @@ export class DynamoDBEventMastRepository extends DynamoDBRepositoryBase<EventMas
     // ================================================
     // keys
     // ================================================
-    protected getPK(input: EventMast): string {
+    protected getPK(_input: EventMast): string {
         return 'Event';
     }
     protected getSK(input: EventMast): string {

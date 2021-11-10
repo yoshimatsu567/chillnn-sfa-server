@@ -86,7 +86,7 @@ export class DynamoDBClientMastRepository extends DynamoDBRepositoryBase<ClientM
     // ================================================
     // keys
     // ================================================
-    protected getPK(input: ClientMast): string {
+    protected getPK(_input: ClientMast): string {
         return 'Client';
     }
     protected getSK(input: ClientMast): string {

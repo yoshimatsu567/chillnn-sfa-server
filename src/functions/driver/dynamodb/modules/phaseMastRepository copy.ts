@@ -81,7 +81,7 @@ export class DynamoDBPhaseMastRepository extends DynamoDBRepositoryBase<PhaseMas
     // ================================================
     // keys
     // ================================================
-    protected getPK(input: PhaseMast): string {
+    protected getPK(_input: PhaseMast): string {
         return 'Phase';
     }
     protected getSK(input: PhaseMast): string {

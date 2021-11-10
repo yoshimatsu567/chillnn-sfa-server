@@ -74,7 +74,7 @@ export class DynamoDBUserMastRepository extends DynamoDBRepositoryBase<UserMast>
     // ================================================
     // keys
     // ================================================
-    protected getPK(input: UserMast): string {
+    protected getPK(_input: UserMast): string {
         return `User`;
     }
     protected getSK(input: UserMast): string {
