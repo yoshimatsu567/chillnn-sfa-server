@@ -41,12 +41,15 @@ export class DynamoDBEventMastRepository extends DynamoDBRepositoryBase<EventMas
         return await this.query({
             TableName: this.tableName,
             IndexName: DynamoDBRepositoryBase.UUIDIndexName,
-            KeyConditionExpression: '#uuid = :uuid',
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#CID, :CID)',
             ExpressionAttributeNames: {
-                '#uuid': 'uuid',
+                '#PK': 'PK',
+                '#CID': 'clientID',
             },
             ExpressionAttributeValues: {
-                ':uuid': clientID,
+                ':PK': 'Phase',
+                ':CID': clientID,
             },
         });
     }
@@ -56,11 +59,14 @@ export class DynamoDBEventMastRepository extends DynamoDBRepositoryBase<EventMas
             TableName: this.tableName,
             IndexName: DynamoDBRepositoryBase.UUIDIndexName,
             KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#EUID, :EUID)',
             ExpressionAttributeNames: {
                 '#PK': 'PK',
+                '#EUID': 'EUID',
             },
             ExpressionAttributeValues: {
-                ':PK': `Event#${editedUserID}`,
+                ':PK': 'Event',
+                ':EUID': editedUserID,
             },
         });
     }
@@ -81,8 +87,13 @@ export class DynamoDBEventMastRepository extends DynamoDBRepositoryBase<EventMas
     // ================================================
     // keys
     // ================================================
-    protected getPK(_input: EventMast): string {
+    protected getPK(input: EventMast): string {
         return 'Event';
+        // if (input) {
+        //     return `Event${input.clientID}`;
+        // } else {
+        //     return 'Event';
+        // }
     }
     protected getSK(input: EventMast): string {
         return `${input.createdAt}#${input.eventID}`;

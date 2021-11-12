@@ -32,18 +32,25 @@ type Query {
     fetchMyUserMast: UserMast
     fetchUserMastByUserID(userID: ID!): UserMast
     fetchAllUser: [UserMast!]!
+    # fetchUsersMastByPhaseNumber(phaseNumber: Int!): [UserMast!]!
+    # fetchUsersMastByPhaseDetail(phaseDetail: String!): [UserMast!]!
     ##################################################
     # client
     ##################################################
     fetchClientByClientID(clientID: ID!): ClientMast
     fetchClientByChargeUserID(chargeUserID: ID!): [ClientMast!]!
     fetchAllClient: [ClientMast!]!
+    fetchClientsByContentSearch(phaseContent: FetchClientsByPhaseInput!): [ClientMast!]!
+    fetchClientsByPhaseStatus(phaseStatus: String!): [ClientMast!]!
+    fetchClientsByPhaseNumber(phaseNumber: Int!): [ClientMast!]!
+    fetchClientsByPhaseDetail(phaseDetail: String!): [ClientMast!]!
     ##################################################
     # phase
     ##################################################
     fetchPhasesByClientID(clientID: ID!): [PhaseMast!]!
     fetchPhasesByEditedUserID(editedUserID: ID!): [PhaseMast!]!
     fetchAllPhase: [PhaseMast!]!
+    fetchAllPhaseTitle: [PhaseMast!]!
     ##################################################
     # event
     ##################################################

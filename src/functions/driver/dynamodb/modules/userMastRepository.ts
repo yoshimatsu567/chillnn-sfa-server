@@ -71,6 +71,35 @@ export class DynamoDBUserMastRepository extends DynamoDBRepositoryBase<UserMast>
         });
     }
 
+    // async fetchUsersMastByPhaseNumber(phaseNumber: number): Promise<UserMast[]> {
+    //     return this.query({
+    //         TableName: this.tableName,
+    //         KeyConditionExpression: '#PK = :PK',
+    //         FilterExpression: 'contains(#PN, :PN)',
+    //         ExpressionAttributeNames: {
+    //             '#PK': 'PK',
+    //             '#PN': 'PN',
+    //         },
+    //         ExpressionAttributeValues: {
+    //             ':PK': `Phase`,
+
+    //         },
+    //     });
+    // }
+
+    // async fetchUsersMastByPhaseDetail(phaseDetail: string): Promise<UserMast[]> {
+    //     return this.query({
+    //         TableName: this.tableName,
+    //         KeyConditionExpression: '#PK = :PK',
+    //         ExpressionAttributeNames: {
+    //             '#PK': 'PK',
+    //         },
+    //         ExpressionAttributeValues: {
+    //             ':PK': `Phase#${phaseDetail}`,
+    //         },
+    //     });
+    // }
+
     // ================================================
     // keys
     // ================================================

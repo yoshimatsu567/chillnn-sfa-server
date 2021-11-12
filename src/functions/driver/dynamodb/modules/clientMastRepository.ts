@@ -1,4 +1,4 @@
-import { ClientMast } from 'chillnn-sfa-abr';
+import { ClientMast, FetchClientsByPhaseInput } from 'chillnn-sfa-abr';
 import { IClientMastRepository } from 'chillnn-sfa-abr/dist/entities/repositories/modules/clientMastRepository';
 import { DynamoDBRepositoryBase } from '../dynamoDBRepositoryBase';
 
@@ -60,12 +60,14 @@ export class DynamoDBClientMastRepository extends DynamoDBRepositoryBase<ClientM
         return await this.query({
             TableName: this.tableName,
             IndexName: DynamoDBRepositoryBase.UUIDIndexName,
-            KeyConditionExpression: '#PK = :PK',
+            KeyConditionExpression: '#PK = :PK and #SK = :SK',
             ExpressionAttributeNames: {
                 '#PK': 'PK',
+                '#SK': 'SK',
             },
             ExpressionAttributeValues: {
-                ':PK': `Client#${chargeUserID}`,
+                ':PK': 'Client',
+                ':SK': chargeUserID,
             },
         });
     }
@@ -79,6 +81,70 @@ export class DynamoDBClientMastRepository extends DynamoDBRepositoryBase<ClientM
             },
             ExpressionAttributeValues: {
                 ':PK': 'Client',
+            },
+        });
+    }
+
+    public async fetchClientsByContentSearch(phaseContent: FetchClientsByPhaseInput) {
+        return this.query({
+            TableName: this.tableName,
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#PC, :PC)',
+            ExpressionAttributeNames: {
+                '#PK': 'PK',
+                '#PC': 'phaseContent',
+            },
+            ExpressionAttributeValues: {
+                ':PK': 'Client',
+                ':PC': phaseContent,
+            },
+        });
+    }
+
+    public async fetchClientsByPhaseStatus(phaseStatus: string) {
+        return this.query({
+            TableName: this.tableName,
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#PS, :PS)',
+            ExpressionAttributeNames: {
+                '#PK': 'PK',
+                '#PS': 'phaseStatus',
+            },
+            ExpressionAttributeValues: {
+                ':PK': 'Client',
+                ':ps': phaseStatus,
+            },
+        });
+    }
+
+    public async fetchClientsByPhaseNumber(phaseNumber: number) {
+        return this.query({
+            TableName: this.tableName,
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#PN, :PN)',
+            ExpressionAttributeNames: {
+                '#PK': 'PK',
+                '#PN': 'phaseNumber',
+            },
+            ExpressionAttributeValues: {
+                ':PK': 'Client',
+                ':PN': phaseNumber,
+            },
+        });
+    }
+
+    public async fetchClientsByPhaseDetail(phaseDetail: string) {
+        return this.query({
+            TableName: this.tableName,
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#PD, :PD)',
+            ExpressionAttributeNames: {
+                '#PK': 'PK',
+                '#PD': 'PD',
+            },
+            ExpressionAttributeValues: {
+                ':PK': 'Client',
+                ':PD': phaseDetail,
             },
         });
     }

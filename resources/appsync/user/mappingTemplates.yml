@@ -28,6 +28,16 @@
   field: fetchUserMastByUserID
   request: userMast/fetchUserMastByUserID/req.vtl
   response: userMast/fetchUserMastByUserID/res.vtl
+# - dataSource: masterTable
+#   type: Query
+#   field: fetchUsersMastByPhaseDetail
+#   request: userMast/fetchUsersMastByPhaseDetail/req.vtl
+#   response: userMast/fetchUsersMastByPhaseDetail/res.vtl
+# - dataSource: masterTable
+#   type: Query
+#   field: fetchUsersMastByPhaseNumber
+#   request: userMast/fetchUsersMastByPhaseNumber/req.vtl
+#   response: userMast/fetchUsersMastByPhaseNumber/res.vtl
 ##################################################
 # client
 ##################################################
@@ -56,6 +66,26 @@
   field: fetchClientByChargeUserID
   request: clientMast/fetchClientByChargeUserID/req.vtl
   response: clientMast/fetchClientByChargeUserID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientsByContentSearch
+  request: clientMast/fetchClientsByContentSearch/req.vtl
+  response: clientMast/fetchClientsByContentSearch/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientsByPhaseStatus
+  request: clientMast/fetchClientsByPhaseStatus/req.vtl
+  response: clientMast/fetchClientsByPhaseStatus/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientsByPhaseNumber
+  request: clientMast/fetchClientsByPhaseNumber/req.vtl
+  response: clientMast/fetchClientsByPhaseNumber/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchClientsByPhaseDetail
+  request: clientMast/fetchClientsByPhaseDetail/req.vtl
+  response: clientMast/fetchClientsByPhaseDetail/res.vtl
 ##################################################
 # phase
 ##################################################
@@ -79,6 +109,11 @@
   field: fetchAllPhase
   request: phaseMast/fetchAllPhase/req.vtl
   response: phaseMast/fetchAllPhase/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchAllPhaseTitle
+  request: phaseMast/fetchAllPhaseTitle/req.vtl
+  response: phaseMast/fetchAllPhaseTitle/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchPhasesByEditedUserID

@@ -41,12 +41,15 @@ export class DynamoDBPhaseMastRepository extends DynamoDBRepositoryBase<PhaseMas
         return await this.query({
             TableName: this.tableName,
             IndexName: DynamoDBRepositoryBase.UUIDIndexName,
-            KeyConditionExpression: '#uuid = :uuid',
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#CID, :CID)',
             ExpressionAttributeNames: {
-                '#uuid': 'uuid',
+                '#PK': 'PK',
+                '#CID': 'clientID',
             },
             ExpressionAttributeValues: {
-                ':uuid': clientID,
+                ':PK': 'Phase',
+                ':CID': clientID,
             },
         });
     }
@@ -56,11 +59,14 @@ export class DynamoDBPhaseMastRepository extends DynamoDBRepositoryBase<PhaseMas
             TableName: this.tableName,
             IndexName: DynamoDBRepositoryBase.UUIDIndexName,
             KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#EUID, :EUID)',
             ExpressionAttributeNames: {
                 '#PK': 'PK',
+                '#EUID': 'EUID',
             },
             ExpressionAttributeValues: {
-                ':PK': `Phase#${editedUserID}`,
+                ':PK': 'Phase',
+                ':EUID': editedUserID,
             },
         });
     }
@@ -78,11 +84,32 @@ export class DynamoDBPhaseMastRepository extends DynamoDBRepositoryBase<PhaseMas
         });
     }
 
+    public async fetchAllPhaseTitle(): Promise<PhaseMast[]> {
+        return this.query({
+            TableName: this.tableName,
+            KeyConditionExpression: '#PK = :PK',
+            FilterExpression: 'contains(#PS, :PS)',
+            ExpressionAttributeNames: {
+                '#PK': 'PK',
+                '#PS': 'phaseStatus',
+            },
+            ExpressionAttributeValues: {
+                ':PK': 'Phase',
+                ':PS': 'TITLE',
+            },
+        });
+    }
+
     // ================================================
     // keys
     // ================================================
     protected getPK(_input: PhaseMast): string {
         return 'Phase';
+        // if (input.clientID || input.clientID !== null || input.clientID !== '') {
+        //     return `Phase#${input.clientID}`;
+        // } else {
+        //     return 'Phase';
+        // }
     }
     protected getSK(input: PhaseMast): string {
         return `${input.createdAt}#${input.phaseID}`;
