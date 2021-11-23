@@ -2,12 +2,14 @@
     "version": "2018-05-29",
     "operation": "Query",
     "query": {
-        "expression": "#PK = :PK",
+        "expression": "#PK = :PK and begins_with(#SK, :SK)",
         "expressionNames": {
             "#PK": "PK",
+            "#SK": "SK",
         },
         "expressionValues": {
             ":PK": $util.dynamodb.toDynamoDBJson("Phase"),
+            ":SK": $util.dynamodb.toDynamoDBJson("${ctx.args.editedUserID}"),
         }
     },
 }

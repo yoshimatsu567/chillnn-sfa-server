@@ -1,0 +1,16 @@
+{
+    "version": "2018-05-29",
+    "operation": "Query",
+    "index": "pdsIndex",
+    "query": {
+        "expression": "#pds = :pds AND #PK = :PK",
+        "expressionNames": {
+            "#pds": "pds",
+            "#PK": "PK"
+        },
+        "expressionValues": {
+            ":pds": $util.dynamodb.toDynamoDBJson("${ctx.args.phaseDetail}"),
+            ":PK": $util.dynamodb.toDynamoDBJson("Client")
+        }
+    }
+}

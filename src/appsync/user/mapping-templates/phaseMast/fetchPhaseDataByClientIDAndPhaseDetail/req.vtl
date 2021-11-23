@@ -1,0 +1,16 @@
+{
+    "version": "2018-05-29",
+    "operation": "Query",
+    "index": "pacidIndex",
+    "query": {
+        "expression": "#pacid = :pacid AND begins_with(#pds, :pds)",
+        "expressionNames": {
+            "#pacid": "pacid",
+            "#pds": "pds",
+        },
+        "expressionValues": {
+            ":pacid": $util.dynamodb.toDynamoDBJson("Phase#${ctx.args.clientID}"),
+            ":pds": $util.dynamodb.toDynamoDBJson("${ctx.args.phaseDetail}"),
+        }
+    },
+}

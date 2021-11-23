@@ -13,6 +13,11 @@
   field: updateUserMast
   request: userMast/updateUserMast/req.vtl
   response: userMast/updateUserMast/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: deleteUserMast
+  request: userMast/deleteUserMast/req.vtl
+  response: userMast/deleteUserMast/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchAllUser
@@ -28,16 +33,6 @@
   field: fetchUserMastByUserID
   request: userMast/fetchUserMastByUserID/req.vtl
   response: userMast/fetchUserMastByUserID/res.vtl
-# - dataSource: masterTable
-#   type: Query
-#   field: fetchUsersMastByPhaseDetail
-#   request: userMast/fetchUsersMastByPhaseDetail/req.vtl
-#   response: userMast/fetchUsersMastByPhaseDetail/res.vtl
-# - dataSource: masterTable
-#   type: Query
-#   field: fetchUsersMastByPhaseNumber
-#   request: userMast/fetchUsersMastByPhaseNumber/req.vtl
-#   response: userMast/fetchUsersMastByPhaseNumber/res.vtl
 ##################################################
 # client
 ##################################################
@@ -51,6 +46,16 @@
   field: updateClient
   request: clientMast/updateClient/req.vtl
   response: clientMast/updateClient/res.vtl
+# - dataSource: controller
+#   type: Mutation
+#   field: deleteClient
+#   request: clientMast/deleteClient/req.vtl
+#   response: clientMast/deleteClient/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: deleteClient
+  request: clientMast/deleteClient/req.vtl
+  response: clientMast/deleteClient/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchClientByClientID
@@ -78,14 +83,9 @@
   response: clientMast/fetchClientsByPhaseStatus/res.vtl
 - dataSource: masterTable
   type: Query
-  field: fetchClientsByPhaseNumber
-  request: clientMast/fetchClientsByPhaseNumber/req.vtl
-  response: clientMast/fetchClientsByPhaseNumber/res.vtl
-- dataSource: masterTable
-  type: Query
-  field: fetchClientsByPhaseDetail
-  request: clientMast/fetchClientsByPhaseDetail/req.vtl
-  response: clientMast/fetchClientsByPhaseDetail/res.vtl
+  field: fetchClientsByPhaseDetailStatus
+  request: clientMast/fetchClientsByPhaseDetailStatus/req.vtl
+  response: clientMast/fetchClientsByPhaseDetailStatus/res.vtl
 ##################################################
 # phase
 ##################################################
@@ -99,11 +99,21 @@
   field: updatePhase
   request: phaseMast/updatePhase/req.vtl
   response: phaseMast/updatePhase/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: deletePhase
+  request: phaseMast/deletePhase/req.vtl
+  response: phaseMast/deletePhase/res.vtl
 - dataSource: masterTable
   type: Query
-  field: fetchPhasesByClientID
-  request: phaseMast/fetchPhasesByClientID/req.vtl
-  response: phaseMast/fetchPhasesByClientID/res.vtl
+  field: fetchPhaseDataByClientID
+  request: phaseMast/fetchPhaseDataByClientID/req.vtl
+  response: phaseMast/fetchPhaseDataByClientID/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchPhaseDataByClientIDAndPhaseDetail
+  request: phaseMast/fetchPhaseDataByClientIDAndPhaseDetail/req.vtl
+  response: phaseMast/fetchPhaseDataByClientIDAndPhaseDetail/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchAllPhase
@@ -111,14 +121,19 @@
   response: phaseMast/fetchAllPhase/res.vtl
 - dataSource: masterTable
   type: Query
+  field: fetchPhaseByPhaseID
+  request: phaseMast/fetchPhaseByPhaseID/req.vtl
+  response: phaseMast/fetchPhaseByPhaseID/res.vtl
+- dataSource: masterTable
+  type: Query
   field: fetchAllPhaseTitle
   request: phaseMast/fetchAllPhaseTitle/req.vtl
   response: phaseMast/fetchAllPhaseTitle/res.vtl
 - dataSource: masterTable
   type: Query
-  field: fetchPhasesByEditedUserID
-  request: phaseMast/fetchPhasesByEditedUserID/req.vtl
-  response: phaseMast/fetchPhasesByEditedUserID/res.vtl
+  field: fetchPhaseDataByEditedUserID
+  request: phaseMast/fetchPhaseDataByEditedUserID/req.vtl
+  response: phaseMast/fetchPhaseDataByEditedUserID/res.vtl
 ##################################################
 # event
 ##################################################
@@ -132,6 +147,16 @@
   field: updateEvent
   request: eventMast/updateEvent/req.vtl
   response: eventMast/updateEvent/res.vtl
+- dataSource: controller
+  type: Mutation
+  field: deleteEvent
+  request: eventMast/deleteEvent/req.vtl
+  response: eventMast/deleteEvent/res.vtl
+- dataSource: masterTable
+  type: Query
+  field: fetchEventByEventID
+  request: eventMast/fetchEventByEventID/req.vtl
+  response: eventMast/fetchEventByEventID/res.vtl
 - dataSource: masterTable
   type: Query
   field: fetchEventsByClientID

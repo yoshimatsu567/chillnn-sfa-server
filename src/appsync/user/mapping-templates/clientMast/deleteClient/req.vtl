@@ -1,0 +1,9 @@
+{
+    "version": "2018-05-29",
+    "operation": "Invoke",
+    "payload": {
+        "input": $util.toJson($ctx.args),
+        "action": $util.toJson("DeleteClient"),
+        "userID": $util.toJson($ctx.identity.username)
+    }
+}

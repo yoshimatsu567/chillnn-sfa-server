@@ -1,0 +1,15 @@
+##if($ctx.error)
+ ##   $util.error($ctx.error.message, $ctx.error.type)
+##end
+
+## #if ($util.isNull($ctx.result) )
+##     $util.error('')
+## #end
+
+##$util.toJson($context.result.items)
+
+#if($context.result.items == [])
+    $util.toJson(null)
+#else
+    $util.toJson($context.result.items[0])
+#end

@@ -2,9 +2,14 @@
     "version": "2018-05-29",
     "operation": "Query",
     "query": {
-        "expression": "PK = :PK",
+        "expression": "#PK = :PK AND begins_with(#SK, :SK)",
+        "expressionNames": {
+            "#PK": "PK",
+            "#SK": "SK",
+        },
         "expressionValues": {
-            ":PK": $util.dynamodb.toDynamoDBJson("Event#${ctx.args.clientID}")
+            ":PK": $util.dynamodb.toDynamoDBJson("Event"),
+            ":SK": $util.dynamodb.toDynamoDBJson("${ctx.args.clientID}"),
         }
     },
 }

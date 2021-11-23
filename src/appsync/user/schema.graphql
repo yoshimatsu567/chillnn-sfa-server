@@ -1,60 +1,67 @@
 schema {
-    mutation: Mutation
-    query: Query
+        mutation: Mutation
+        query: Query
 }
 
 type Mutation {
-    ##################################################
-    # user
-    ##################################################
-    updateUserMast(input: UserMastInput!): UserMast!
-    ##################################################
-    # client
-    ##################################################
-    addClient(input: ClientMastInput!): ClientMast!
-    updateClient(input: ClientMastInput!): ClientMast!
-    ##################################################
-    # phase
-    ##################################################
-    addPhase(input: PhaseMastInput!): PhaseMast!
-    updatePhase(input: PhaseMastInput!): PhaseMast!
-    ##################################################
-    # event
-    ##################################################
-    addEvent(input: EventMastInput!): EventMast!
-    updateEvent(input: EventMastInput!): EventMast!
+        ##################################################
+        # user
+        ##################################################
+        updateUserMast(input: UserMastInput!): UserMast!
+        deleteUserMast(userID: ID!): UserMast!
+        ##################################################
+        # client
+        ##################################################
+        addClient(input: ClientMastInput!): ClientMast!
+        updateClient(input: ClientMastInput!): ClientMast!
+        # deleteClient(clientID: ID!): ClientMast!
+        ##################################################
+        # phase
+        ##################################################
+        addPhase(input: PhaseMastInput!): PhaseMast!
+        updatePhase(input: PhaseMastInput!): PhaseMast!
+        deletePhase(phaseID: ID!): PhaseMast!
+        ##################################################
+        # event
+        ##################################################
+        addEvent(input: EventMastInput!): EventMast!
+        updateEvent(input: EventMastInput!): EventMast!
+        deleteEvent(eventID: ID!): EventMast!
 }
 
 type Query {
-    ##################################################
-    # user
-    ##################################################
-    fetchMyUserMast: UserMast
-    fetchUserMastByUserID(userID: ID!): UserMast
-    fetchAllUser: [UserMast!]!
-    # fetchUsersMastByPhaseNumber(phaseNumber: Int!): [UserMast!]!
-    # fetchUsersMastByPhaseDetail(phaseDetail: String!): [UserMast!]!
-    ##################################################
-    # client
-    ##################################################
-    fetchClientByClientID(clientID: ID!): ClientMast
-    fetchClientByChargeUserID(chargeUserID: ID!): [ClientMast!]!
-    fetchAllClient: [ClientMast!]!
-    fetchClientsByContentSearch(phaseContent: FetchClientsByPhaseInput!): [ClientMast!]!
-    fetchClientsByPhaseStatus(phaseStatus: String!): [ClientMast!]!
-    fetchClientsByPhaseNumber(phaseNumber: Int!): [ClientMast!]!
-    fetchClientsByPhaseDetail(phaseDetail: String!): [ClientMast!]!
-    ##################################################
-    # phase
-    ##################################################
-    fetchPhasesByClientID(clientID: ID!): [PhaseMast!]!
-    fetchPhasesByEditedUserID(editedUserID: ID!): [PhaseMast!]!
-    fetchAllPhase: [PhaseMast!]!
-    fetchAllPhaseTitle: [PhaseMast!]!
-    ##################################################
-    # event
-    ##################################################
-    fetchEventsByClientID(clientID: ID!): [EventMast!]!
-    fetchEventsByEditedUserID(editedUserID: ID!): [EventMast!]!
-    fetchAllEvent: [EventMast!]!
+        ##################################################
+        # user
+        ##################################################
+        fetchMyUserMast: UserMast
+        fetchUserMastByUserID(userID: ID!): UserMast
+        fetchAllUser: [UserMast!]!
+        # fetchUsersMastByPhaseNumber(phaseNumber: Int!): [UserMast!]!
+        # fetchUsersMastByPhaseDetail(phaseDetail: String!): [UserMast!]!
+        ##################################################
+        # client
+        ##################################################
+        deleteClient(clientID: ID!): ClientMast
+        fetchClientByClientID(clientID: ID!): ClientMast
+        fetchClientByChargeUserID(chargeUserID: ID!): [ClientMast!]!
+        fetchAllClient: [ClientMast!]!
+        fetchClientsByContentSearch(phaseContent: FetchClientsByPhaseInput!): [ClientMast!]!
+        fetchClientsByPhaseStatus(phaseStatus: String!): [ClientMast!]!
+        fetchClientsByPhaseDetailStatus(phaseDetail: String!): [ClientMast]
+        ##################################################
+        # phase
+        ##################################################
+        fetchPhaseDataByClientID(clientID: ID!): [PhaseMast!]!
+        fetchPhaseDataByClientIDAndPhaseDetail(clientID: ID!, phaseDetail: String!): PhaseMast
+        fetchPhaseDataByEditedUserID(editedUserID: ID!): [PhaseMast!]!
+        fetchAllPhase: [PhaseMast!]!
+        fetchAllPhaseTitle: [PhaseMast!]!
+        fetchPhaseByPhaseID(phaseID: ID!): PhaseMast
+        ##################################################
+        # event
+        ##################################################
+        fetchEventsByClientID(clientID: ID!): [EventMast]
+        fetchEventsByEditedUserID(editedUserID: ID!): [EventMast!]!
+        fetchAllEvent: [EventMast!]!
+        fetchEventByEventID(eventID: ID!): EventMast
 }
